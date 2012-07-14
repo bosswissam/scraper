@@ -1,4 +1,4 @@
-import httplib2, time, re, argparse, csv
+import httplib2, time, re, argparse, csv, sys, shutil, os
 from parsers import Parser
 from bs4 import BeautifulSoup as bfs
 SCRAPING_CONN = httplib2.Http(".cache")
@@ -38,17 +38,23 @@ def parserow(row, row_num):
     domain = m.group(0)
     handler = PARSER.getParser(domain)
     if (handler):
+        sys.stdout.write("Getting information from {0}, ".format(domain))
         handler(url, img_url)
     else:
         print("Domain '{0}' not recognized at line {1}".format(domain, row_num))
 
 def main():
     parser = argparse.ArgumentParser(description="Scrape websites")
-    parser.add_argument("filename")
+    parser.add_argument('filename')
+    parser.add_argument('results')
     argvs = vars(parser.parse_args())
     filename = argvs['filename']
-    print("Starting scraper on", filename)
+    results_dir = argvs['results']
+    shutil.rmtree(results_dir)
+    os.mkdir(results_dir)
+    print("Starting scraper on '{0}', storing results in '{1}'".format(filename, results_dir))
     reader = csv.reader(open(filename))
+    os.chdir(results_dir)
     row_num = 0
     for row in reader:
         row_num +=1

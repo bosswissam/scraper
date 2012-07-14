@@ -1,7 +1,5 @@
-import etsy, re, sys
-
-etsy_url_id = 'listing_id'
-etsy_url_regex = "/(?P<{0}>[0-9]+)/".format(etsy_url_id)
+import re, sys, json, urllib, common, os, httplib2
+from etsy import *
 
 class Parser():
     def __init__(self):
@@ -17,13 +15,29 @@ class Parser():
         return None
 
 def etsy_parser(url, img_url):
-    # parses out the listing_id and calls the etsy api on it
-    listing_id = re.search(etsy_url_regex, url).group(etsy_url_id)
-#    print(etsy_url_regex)
-#    print(url)
-    sys.stdout.write("Getting information for {0} from Etsy".format(listing_id))
-    if (etsy.getListing(listing_id)):
-        print("... Done")
+    listing = EtsyListing(url)
+    sys.stdout.write("listing_id = {0}... ".format(listing.id))
+    dir_name = '{0}'.format(urllib.parse.quote_plus(listing.url))
+    os.mkdir(dir_name)
+    image_downloaded = download_image(img_url, dir_name)
+    if (listing.is_empty):
+        sys.stdout.write("Failed: Empty Listing. ")
     else:
-        print("... Failed")
-    
+        f = open('{0}/info.json'.format(dir_name), mode = 'w')
+        json.dump(listing, f, indent = 2, default=serialize)
+        sys.stdout.write("Done. ")
+    if(image_downloaded):
+        print("Image download succeeded")
+    else:
+        print("Image download failed")
+
+def download_image(img_url, dir_name):
+    response, img = httplib2.Http().request(img_url, 'GET')
+    if (response['content-location'] != img_url): # so far this means redirected to no image
+        return False
+#    img = img.read()
+    img_name = os.path.basename(img_url)
+    f = open(os.path.join(dir_name, img_name), mode = 'wb')
+    f.write(img)
+    f.close()
+    return True

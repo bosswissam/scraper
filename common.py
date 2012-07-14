@@ -39,7 +39,7 @@ class SimpleRating:
         self.count = count
 
     def __init__(self):
-        pass
+        self.x = 's'
 
 # Start of Details objects
 
@@ -59,10 +59,5 @@ class SimpleDetail:
         self.value = value
 
 # json.dumps is expecting a method, __dict__ is an attribute, hence this hack.
-def __dict__(x):
+def serialize(x):
     return x.__dict__
-
-
-x = SimpleRating()
-x.z = 'x'
-print(x.__dict__)
