@@ -1,0 +1,7 @@
+url,image_file
+http://www.etsy.com/listing/88017614/vintage-kitchen-scale-mid-century-modern?ref=fp_treasury_1,http://img1.etsystatic.com/il_570xN.293587689.jpg                                                                                                                                                                                                                     
+http://www.etsy.com/listing/86483141/white-and-gold-charm-drop-earrings?ref=fp_featured_item,http://img2.etsystatic.com/il_fullxfull.287597146.jpg
+http://www.amazon.com/gp/product/B002P8T0L0/ref=s9_simh_gw_p23_d0_g23_i1?pf_rd_m=ATVPDKIKX0DER&pf_rd_s=center-2&pf_rd_r=0WQ1VFHRSY7ZTB93FGYG&pf_rd_t=101&pf_rd_p=470938631&pf_rd_i=507846,http://ecx.images-amazon.com/images/I/31hak2cSIOL.jpg
+http://www.amazon.com/Spidering-Hacks-Kevin-Hemenway/dp/0596005776/ref=sr_1_1?ie=UTF8&qid=1323553646&sr=8-1,http://ecx.images-amazon.com/images/I/416Qhhyq%2BmL._BO2,204,203,200_PIsitb-sticker-arrow-click,TopRight,35,-76_AA300_SH20_OU01_.jpg
+http://www.thesartorialist.com/,http://images.thesartorialist.com/thumbnails/2011/12/101411IMG_4766Web1.jpg
+http://www.gap.com/browse/product.do?cid=5231&vid=1&pid=768628&scid=768628352,http://www2.assets-gap.com/Asset_Archive/GPWeb/Assets/Product/768/768628/main/gp768628-35p01v01.jpg
