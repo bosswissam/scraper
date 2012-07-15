@@ -1,0 +1,20 @@
+{
+  "count": 1, 
+  "type": "User", 
+  "pagination": {}, 
+  "params": {
+    "user_id": "9094134"
+  }, 
+  "results": [
+    {
+      "referred_by_user_id": null, 
+      "feedback_info": {
+        "count": 14, 
+        "score": 100
+      }, 
+      "user_id": 9094134, 
+      "login_name": "RemonaPoortman", 
+      "creation_tsz": 1282768759
+    }
+  ]
+}

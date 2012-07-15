@@ -6,21 +6,18 @@ class FiveStar:
     # score = average score out of 5
     # count = # of people who rated
     def __init__(self, score = -1, count = -1):
-        self.type = 'five_star' # this is just a hack to get the type to print in __dict__
-        self.score = score
+        self.five_star = score
         self.count = count
 
 class Views:
     
     def __init__(self, count):
-        self.type = 'views'
-        self.count = count
+        self.views = count
 
 class Favorers:
     
     def __init__(self, count):
-        self.type = 'favorers'
-        self.count = count
+        self.favorers = count
 
 class Likes:
     
@@ -34,12 +31,8 @@ class Likes:
 # names (e.g. 'likes', 'favorers'...))
 class SimpleRating:
     
-    def __init__(self, rating_type, count):
-        self.type = rating_type
-        self.count = count
-
     def __init__(self):
-        self.x = 's'
+        pass
 
 # Start of Details objects
 
@@ -54,9 +47,13 @@ class Dimensions:
 
 class SimpleDetail:
     
-    def __init__(self, detail_type, value):
-        self.type = detail_type
-        self.value = value
+    def __init__(self):
+        pass
+
+class SimpleObject:
+    
+    def __init(self):
+        pass
 
 # json.dumps is expecting a method, __dict__ is an attribute, hence this hack.
 def serialize(x):

@@ -1,0 +1,20 @@
+{
+  "count": 1, 
+  "type": "User", 
+  "pagination": {}, 
+  "params": {
+    "user_id": "9224272"
+  }, 
+  "results": [
+    {
+      "referred_by_user_id": 5367930, 
+      "feedback_info": {
+        "count": 75, 
+        "score": 100
+      }, 
+      "user_id": 9224272, 
+      "login_name": "TeezLoueez", 
+      "creation_tsz": 1282320606
+    }
+  ]
+}

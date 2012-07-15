@@ -1,0 +1,67 @@
+{
+  "count": 1, 
+  "type": "Listing", 
+  "pagination": {}, 
+  "params": {
+    "listing_id": "98664403"
+  }, 
+  "results": [
+    {
+      "num_favorers": 302, 
+      "creation_tsz": 1338566282, 
+      "original_creation_tsz": 1335677599, 
+      "shop_section_id": 6087104, 
+      "listing_id": 98664403, 
+      "user_id": 5142741, 
+      "title": "Brown Leather Journal", 
+      "views": 920, 
+      "last_modified_tsz": 1338566352, 
+      "state": "active", 
+      "is_black_and_white": false, 
+      "hue": 25, 
+      "saturation": 7, 
+      "state_tsz": 1335677599, 
+      "description": "This is a soft cover antique looking brown leather Journal hand sewn with about 440 pages(front and back)  . The edges are hand torn. The book opens up nicely and lays completely flat. It is lined with a decorative end sheet  Held closed by its playful flap and snap-fastener.\r\nIt measures 6 1/2&quot; x 6 1/2&quot;.(16cm x 16cm)\r\n\r\nPlease keep the journal out of the direct sunlight, color may fade.", 
+      "tags": [
+        "journal", 
+        "diary", 
+        "travel journal", 
+        "book", 
+        "leather", 
+        "blank", 
+        "guestbook", 
+        "brown", 
+        "antique looking", 
+        "bound", 
+        "homespunsociety", 
+        "fathers day", 
+        "men"
+      ], 
+      "price": "46.00", 
+      "style": null, 
+      "who_made": "i_did", 
+      "recipient": null, 
+      "category_path": [
+        "Books and Zines", 
+        "Journal", 
+        "Leather"
+      ], 
+      "ending_tsz": 1349064000, 
+      "is_supply": "false", 
+      "brightness": 72, 
+      "url": "http://www.etsy.com/listing/98664403/brown-leather-journal?utm_source=pinhw&utm_medium=api&utm_campaign=api", 
+      "when_made": "2010_2012", 
+      "materials": [
+        "paper", 
+        "leather", 
+        "thread", 
+        "glue"
+      ], 
+      "currency_code": "USD", 
+      "occasion": null, 
+      "category_id": 69177527, 
+      "featured_rank": null, 
+      "quantity": 1
+    }
+  ]
+}

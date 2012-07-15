@@ -17,27 +17,59 @@ URL_ID_REGEX = "/(?P<{0}>[0-9]+)/".format(URL_ID_NAME)
 product_id = '88017614'
 
 
-# Creating this class to abstract away the parsing of the information about the object. 
-# This "interface" would make it easier to create EtsyListings using other means (by hand
-# for example, for testing).
+def get_etsy_listing(url):
+    content = get_content(get_etsy_listing_api_url(url))
+    listing = EtsyListing(content)
+    if(not listing.is_empty):
+        listing.seller = get_etsy_seller(listing.seller)
+    listing.url = url
+    return listing
+
+def get_etsy_seller(user_id):
+    content = get_content(get_etsy_seller_api_url(user_id))
+    seller = EtsySeller(content)
+    return seller
+
+def get_etsy_seller_api_url(user_id):
+    return '{0}{1}?api_key={2}'.format(USER_API_URL, user_id, API_KEY)
+
+def get_etsy_listing_api_url(url):
+    listing_id = re.search(URL_ID_REGEX, url).group(URL_ID_NAME)
+    return '{0}{1}?api_key={2}'.format(LISTING_API_URL, listing_id, API_KEY)
+
+def get_content(url):
+    resp, content = httplib2.Http().request(url, 'GET')
+    assert resp.status == 200
+    # for some reason the content is in binary
+    content = content.decode("utf-8")
+    content = json.loads(content)
+    return content
+
+
+
 
 class EtsyListing():
+
+    '''Creating this class to abstract away the parsing of the information about the object. This "interface" would make it easier to create EtsyListings using other means (by hand for example, for testing). content is a dict formated as the 'results' object in the json object returned by the Etsy API. You can find samples in saved_pages/etsy
+    '''
     
-    def __init__(self, url):
-        self.id = re.search(URL_ID_REGEX, url).group(URL_ID_NAME)
-        self.url = url
-        content = self.get_content('{0}{1}?api_key={2}'.format(LISTING_API_URL, self.id, API_KEY))
+    def __init__(self, content):
+        content = content['results'][0]
+        self.id = content['listing_id']
         # introduced a new field to make it easier to check if the content is empty (from 
         # outside the class)
-        self.is_empty = (content==None)
-#        print(content)
+        # This can change in the future, for now I noticed if a Listing does not have
+        # one of those states then it has little information to get
+        self.is_empty = (content['state'] != 'active' and content['state'] != 'sold_out')
         if (self.is_empty):
             return
+        self.url = content['url']
         self.title = content['title']
-        self.description = content['description']
-        self.seller = EtsySeller(content['user_id'])
+        self.seller = content['user_id']
         # expecting a list
         self.tags = content['tags']
+        # for etsy listings, categories are viewed as tags on the web page
+        self.tags.extend(content['category_path'])
         self.quantity = content['quantity']
         if (self.quantity):
             self.price = content['price']
@@ -45,24 +77,13 @@ class EtsyListing():
             self.price = -1 # if price <  0, my json serializer will write null
         self.currency_code = content['currency_code']
         # details is a list of objects, e.g. [ 'dimensions':{'weight' : x, 'height': y}] - from amazon
-        self.details = [SimpleDetail('category', content['category_path'])]
+        self.details = SimpleObject()
+        self.details.category_path = content['category_path']
+        self.details.description = content['description']
         # ratings is a list of Rating objects
-        self.ratings = [Views(content['views']), Favorers(content['num_favorers'])]
-        self.url = content['url'] #keep the real url
-
-
-    def get_content(self, url):
-        resp, content = httplib2.Http().request(url, 'GET')
-        # for some reason the content is in binary
-        content = content.decode("utf-8")
-        content = json.loads(content)
-        # doing some parsing
-        content = content['results'][0]
-        if (content['state'] != 'active' and content['state'] != 'sold_out'):
-            # This can change in the future, for now I noticed if a Listing does not have
-            # one of those states then it has little information to get
-            return None
-        return content
+        self.ratings = SimpleObject()
+        self.ratings.views = content['views']
+        self.ratings.num_favorers = content['num_favorers']
 
 
 
@@ -71,18 +92,13 @@ class EtsyListing():
 
 class EtsySeller():
     
-    def __init__(self, user_id):
-        self.url = '{0}{1}?api_key={2}'.format(USER_API_URL, user_id, API_KEY)
-        self.id = user_id
-        content = self.get_content()
-        self.login_name = content['login_name']
-        self.feedback_info = content['feedback_info']
-
-    def get_content(self):
-        resp, seller_info = httplib2.Http().request(self.url, 'GET')
-        content = seller_info.decode("utf-8")
-        content = json.loads(content)
+    def __init__(self, content):
         content = content['results'][0]
-        return content
+        self.id = content['user_id']
+        self.login_name = content['login_name']
+        self.feedback_info = SimpleObject()
+        self.feedback_info.count = content['feedback_info']['count']
+        self.feedback_info.score = content['feedback_info']['score']
+
         
 #getListing(product_id)

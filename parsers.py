@@ -15,17 +15,21 @@ class Parser():
         return None
 
 def etsy_parser(url, img_url):
-    listing = EtsyListing(url)
-    sys.stdout.write("listing_id = {0}... ".format(listing.id))
-    dir_name = '{0}'.format(urllib.parse.quote_plus(listing.url))
+    listing = get_etsy_listing(url)
+#    sys.stdout.write("listing_id = {0}... ".format(listing.id))
+    dir_name = urllib.parse.quote_plus(url)
     os.mkdir(dir_name)
     image_downloaded = download_image(img_url, dir_name)
-    if (listing.is_empty):
-        sys.stdout.write("Failed: Empty Listing. ")
-    else:
+    if (listing):
         f = open('{0}/info.json'.format(dir_name), mode = 'w')
         json.dump(listing, f, indent = 2, default=serialize)
+        f.close()
         sys.stdout.write("Done. ")
+    else:
+        sys.stdout.write("Failed: Empty Listing. ")
+        f = open('{0}/listing_not_found.txt'.format(dir_name), mode = 'w')
+        f.write('The listing at {0} was not found'.format(url))
+        f.close()
     if(image_downloaded):
         print("Image download succeeded")
     else:

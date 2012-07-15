@@ -1,0 +1,62 @@
+{
+  "count": 1, 
+  "type": "Listing", 
+  "pagination": {}, 
+  "params": {
+    "listing_id": "91482374"
+  }, 
+  "results": [
+    {
+      "num_favorers": 107, 
+      "creation_tsz": 1338866721, 
+      "original_creation_tsz": 1327586286, 
+      "shop_section_id": 10413381, 
+      "listing_id": 91482374, 
+      "user_id": 10041091, 
+      "title": "Brown Leather Belt Mens Classic  Fashion Woven Braided  Aniline Kipskin", 
+      "views": 336, 
+      "last_modified_tsz": 1338866722, 
+      "state": "active", 
+      "is_black_and_white": false, 
+      "hue": 4, 
+      "saturation": 7, 
+      "state_tsz": 1338866721, 
+      "description": "Mens classic fashion. Luxury brown leather belt rich with detail and style. Supple Aniline Kipskin Shoulder in warm brown. Woven braided detailing. By Torino Leather USA.  Silver toned buckle is stamped solid brass/ made in Italy.\r\n\r\nPlease check photo 4 close-up to see the wonderful detailed braiding\r\n\r\nMakes an elegant gift. \r\n\r\nIn excellent condition, very gently worn\r\n1 1/8&quot; wide\r\nSize 36\r\nShortest hole at 35&quot; and longest at 39&quot;\r\n\r\nMore vintage fashion:  \r\nhttp://www.etsy.com/shop/vintagebiffann?section_id=10413381", 
+      "tags": [
+        "vintage", 
+        "brown leather", 
+        "leather belt", 
+        "mens leather belt", 
+        "fashion accessory", 
+        "woven braided", 
+        "unisex fashion", 
+        "warm honey brown", 
+        "solid brass", 
+        "aniline kipstone", 
+        "luxe brown belt", 
+        "tagt team", 
+        "fathers day gift"
+      ], 
+      "price": "30.00", 
+      "style": null, 
+      "who_made": "someone_else", 
+      "recipient": "unisex_adults", 
+      "category_path": [
+        "Vintage", 
+        "Accessories", 
+        "Belt"
+      ], 
+      "ending_tsz": 1349323200, 
+      "is_supply": "false", 
+      "brightness": 74, 
+      "url": "http://www.etsy.com/listing/91482374/brown-leather-belt-mens-classic-fashion?utm_source=pinhw&utm_medium=api&utm_campaign=api", 
+      "when_made": "before_1993", 
+      "materials": [], 
+      "currency_code": "USD", 
+      "occasion": null, 
+      "category_id": 68901092, 
+      "featured_rank": null, 
+      "quantity": 1
+    }
+  ]
+}

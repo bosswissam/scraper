@@ -1,0 +1,63 @@
+{
+  "count": 1, 
+  "type": "Listing", 
+  "pagination": {}, 
+  "params": {
+    "listing_id": "91804668"
+  }, 
+  "results": [
+    {
+      "num_favorers": 72, 
+      "creation_tsz": 1338462463, 
+      "original_creation_tsz": 1327943520, 
+      "shop_section_id": 10766882, 
+      "listing_id": 91804668, 
+      "user_id": 9094134, 
+      "title": "Sale - Crocheted Bracelet - 25% discount", 
+      "views": 347, 
+      "last_modified_tsz": 1338462463, 
+      "state": "active", 
+      "is_black_and_white": false, 
+      "hue": 26, 
+      "saturation": 4, 
+      "state_tsz": 1338462463, 
+      "description": "Crocheted bracelet.\r\nMade with different types of yarns (both natural and synthetic)\r\n\r\n&lt;\u25c2handwash only\u25b8&gt;\r\n\r\nsize M: +/-20cm", 
+      "tags": [
+        "crocheted", 
+        "wool", 
+        "organic", 
+        "synthetic", 
+        "grey", 
+        "leather", 
+        "warm", 
+        "chunky", 
+        "gray", 
+        "tea rose", 
+        "pink", 
+        "salmon", 
+        "mustard yellow"
+      ], 
+      "price": "18.75", 
+      "style": null, 
+      "who_made": "i_did", 
+      "recipient": null, 
+      "category_path": [
+        "Jewelry", 
+        "Bracelet"
+      ], 
+      "ending_tsz": 1348977600, 
+      "is_supply": "false", 
+      "brightness": 85, 
+      "url": "http://www.etsy.com/listing/91804668/sale-crocheted-bracelet-25-discount?utm_source=pinhw&utm_medium=api&utm_campaign=api", 
+      "when_made": "2000_2009", 
+      "materials": [
+        "yarn"
+      ], 
+      "currency_code": "EUR", 
+      "occasion": null, 
+      "category_id": 68888548, 
+      "featured_rank": null, 
+      "quantity": 1
+    }
+  ]
+}

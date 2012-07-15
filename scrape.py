@@ -38,27 +38,30 @@ def parserow(row, row_num):
     domain = m.group(0)
     handler = PARSER.getParser(domain)
     if (handler):
-        sys.stdout.write("Getting information from {0}, ".format(domain))
+        sys.stdout.write("Getting information from {0}... ".format(domain))
         handler(url, img_url)
+        return True
     else:
-        print("Domain '{0}' not recognized at line {1}".format(domain, row_num))
+        return domain
 
 def main():
     parser = argparse.ArgumentParser(description="Scrape websites")
-    parser.add_argument('filename')
-    parser.add_argument('results')
+    parser.add_argument('filename', help = 'csv file of product + image urls')
+    parser.add_argument('dest', help = 'destination directory to store results')
     argvs = vars(parser.parse_args())
     filename = argvs['filename']
-    results_dir = argvs['results']
-    shutil.rmtree(results_dir)
-    os.mkdir(results_dir)
-    print("Starting scraper on '{0}', storing results in '{1}'".format(filename, results_dir))
+    dest = argvs['dest']
+    shutil.rmtree(dest)
+    os.mkdir(dest)
+    print("Starting scraper on '{0}', storing results in '{1}'".format(filename, dest))
     reader = csv.reader(open(filename))
-    os.chdir(results_dir)
+    os.chdir(dest)
     row_num = 0
     for row in reader:
         row_num +=1
-        parserow(row, row_num)
+        ret = parserow(row, row_num)
+        if(ret != True):
+            print("Domain '{0}' not recognized by scraper at line {1} in {2}".format(ret, row_num, filename))
     print("Done scraping!")
 
 if __name__== "__main__":
