@@ -1,4 +1,4 @@
-import re, sys, json, urllib, common, os, httplib2
+import re, sys, json, urllib, common, os, caching
 from etsy import *
 
 class Parser():
@@ -36,7 +36,7 @@ def etsy_parser(url, img_url):
         print("Image download failed")
 
 def download_image(img_url, dir_name):
-    response, img = httplib2.Http().request(img_url, 'GET')
+    response, img = caching.fetch(img_url, 'GET')
     if (response['content-location'] != img_url): # so far this means redirected to no image
         return False
 #    img = img.read()

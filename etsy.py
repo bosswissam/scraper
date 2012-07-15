@@ -3,7 +3,7 @@
 # the purposes of this project
 
 
-import httplib2, json, urllib, re
+import json, urllib, re, caching
 from common import *
 
 
@@ -38,7 +38,7 @@ def get_etsy_listing_api_url(url):
     return '{0}{1}?api_key={2}'.format(LISTING_API_URL, listing_id, API_KEY)
 
 def get_content(url):
-    resp, content = httplib2.Http().request(url, 'GET')
+    resp, content = caching.fetch(url)
     assert resp.status == 200
     # for some reason the content is in binary
     content = content.decode("utf-8")
