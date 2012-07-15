@@ -1,11 +1,12 @@
-import httplib2, re, time
+import httplib2, re, time, os, shutil
 
+CACHE_PATH = '{0}/.cache'.format(os.path.dirname(os.path.realpath(__file__)))
 
 class Cache:
     _instance = None
     
     def __init__(self):
-        self.scraping_conn = httplib2.Http(".cache")
+        self.scraping_conn = httplib2.Http(CACHE_PATH)
         self.scraping_cache_for = 60*15 # in seconds, 15 minutes
         self.scraping_domain_re = re.compile("\w+:/*(?P<domain>[a-zA-Z0-9.]*)/")
         self.scraping_domains = {}
@@ -15,6 +16,8 @@ class Cache:
 
 def get_instance():
     if(Cache._instance==None):
+        if os.path.exists(CACHE_PATH):
+            shutil.rmtree(CACHE_PATH)
         Cache._instance = Cache()
     return Cache._instance
 
