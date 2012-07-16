@@ -1,10 +1,10 @@
 import time, re, argparse, csv, sys, shutil, os
-from parsers import Parser
+from scrapers import *
 from bs4 import BeautifulSoup as bfs
-PARSER = Parser()
+SCRAPER = Scraper()
 
 # from http://regexlib.com/Search.aspx?k=URL&AspxAutoDetectCookieSupport=1
-URL_REGEX = '[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|COM|ORG|NET|MIL|EDU)'
+URL_REGEX = '\w+:/*(?P<domain>[a-zA-Z0-9.]*)/'#'[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|COM|ORG|NET|MIL|EDU)'
 
 
 
@@ -12,11 +12,19 @@ def parserow(row, row_num):
     url = row[0].strip()
     img_url = row[1].strip()
     m = re.search(URL_REGEX, url)
-    domain = m.group(0)
-    handler = PARSER.getParser(domain)
+    dir_name = urllib.parse.quote_plus(url)
+    os.mkdir(dir_name)
+    download_image(img_url, dir_name)
+    domain = m.group('domain')
+    handler = SCRAPER.get_scraper(domain)
     if (handler):
-        sys.stdout.write("Getting information from {0}... ".format(domain))
-        handler(url, img_url)
+        print("Getting information from {0}... ".format(domain))
+        content = handler(url)
+        if (content):
+            json_dump_to_file('{0}/info.json'.format(dir_name), content)
+        else:
+            write_to_file('{0}/not_found.txt'.format(dir_name), 'w', 'The url at {0} was not found'.format(url))
+
         return True
     else:
         return domain
@@ -31,11 +39,14 @@ def main():
     shutil.rmtree(dest)
     os.mkdir(dest)
     print("Starting scraper on '{0}', storing results in '{1}'".format(filename, dest))
-    reader = csv.reader(open(filename))
+    
+    reader = open(filename)
     os.chdir(dest)
     row_num = 0
     for row in reader:
         row_num +=1
+        # we only have two columns
+        row = re.split(",", row, maxsplit=1)
         ret = parserow(row, row_num)
         if(ret != True):
             print("Domain '{0}' not recognized by scraper at line {1} in {2}".format(ret, row_num, filename))

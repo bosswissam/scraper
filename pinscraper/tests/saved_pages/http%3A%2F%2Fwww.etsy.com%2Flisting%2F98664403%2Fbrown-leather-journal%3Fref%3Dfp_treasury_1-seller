@@ -3,18 +3,18 @@
   "type": "User", 
   "pagination": {}, 
   "params": {
-    "user_id": "6197193"
+    "user_id": "5142741"
   }, 
   "results": [
     {
       "referred_by_user_id": null, 
       "feedback_info": {
-        "count": 71, 
+        "count": 275, 
         "score": 100
       }, 
-      "user_id": 6197193, 
-      "login_name": "galleryzooart", 
-      "creation_tsz": 1282414239
+      "user_id": 5142741, 
+      "login_name": "Nicopapergoods", 
+      "creation_tsz": 1282354445
     }
   ]
 }

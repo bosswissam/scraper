@@ -66,3 +66,11 @@ product details:
 might be easier to use a database - assume url is unique id. Using elixir?
 ok nvm, JSON is required.
 However, can use amazon's & etsy's developer API to pull the info
+
+notes about implementation:
+#ETSY#
+current implementation misses bundling prices for shipping and shipping info in general.
+
+#thesartorialist#
+current implementation does not store paragraphs under picture
+didn't seem to have seller/prices/quantity info

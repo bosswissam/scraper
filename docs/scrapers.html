@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module scrapers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>scrapers</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/u/wjarjoui/workspace/scraper/pinscraper/scrapers.py">/u/wjarjoui/workspace/scraper/pinscraper/scrapers.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="caching.html">caching</a><br>
+<a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<a href="re.html">re</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+<a href="urllib.html">urllib</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="scrapers.html#Scraper">Scraper</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="scrapers.html#EtsyScraper">EtsyScraper</a>
+</font></dt><dt><font face="helvetica, arial"><a href="scrapers.html#TheSartorialistScraper">TheSartorialistScraper</a>
+</font></dt></dl>
+</dd>
+</dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="EtsyScraper">class <strong>EtsyScraper</strong></a>(<a href="scrapers.html#Scraper">Scraper</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;<a href="#Scraper">Scraper</a>&nbsp;class&nbsp;to&nbsp;handle&nbsp;scraping&nbsp;content&nbsp;for&nbsp;items&nbsp;on&nbsp;www.etsy.com.&nbsp;Instead&nbsp;of&nbsp;actually&nbsp;scraping&nbsp;the&nbsp;contents&nbsp;of&nbsp;pages&nbsp;of&nbsp;items,&nbsp;it&nbsp;makes&nbsp;a&nbsp;request&nbsp;through&nbsp;the&nbsp;etsy&nbsp;API&nbsp;to&nbsp;get&nbsp;information&nbsp;about&nbsp;the&nbsp;item&nbsp;in&nbsp;json&nbsp;format,&nbsp;then&nbsp;"scrapes"&nbsp;it&nbsp;into&nbsp;our&nbsp;desired&nbsp;schema.<br>
+&nbsp;<br>
+Note:&nbsp;in&nbsp;the&nbsp;future&nbsp;recommend&nbsp;using&nbsp;python2.x&nbsp;to&nbsp;be&nbsp;able&nbsp;to&nbsp;use&nbsp;etsy-python&nbsp;(could&nbsp;not&nbsp;get&nbsp;it&nbsp;to&nbsp;work&nbsp;for&nbsp;python3.1)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="scrapers.html#EtsyScraper">EtsyScraper</a></dd>
+<dd><a href="scrapers.html#Scraper">Scraper</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="EtsyScraper-download"><strong>download</strong></a>(self, url)</dt></dl>
+
+<dl><dt><a name="EtsyScraper-get_item_info"><strong>get_item_info</strong></a>(self, url, image_url<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="EtsyScraper-load"><strong>load</strong></a>(self, url)</dt></dl>
+
+<dl><dt><a name="EtsyScraper-scrape"><strong>scrape</strong></a>(self, content)</dt></dl>
+
+<dl><dt><a name="EtsyScraper-scrape_seller"><strong>scrape_seller</strong></a>(self, content)</dt></dl>
+
+<hr>
+Methods inherited from <a href="scrapers.html#Scraper">Scraper</a>:<br>
+<dl><dt><a name="EtsyScraper-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="EtsyScraper-get_scraper"><strong>get_scraper</strong></a>(self, domain)</dt></dl>
+
+<dl><dt><a name="EtsyScraper-grab_real_url"><strong>grab_real_url</strong></a>(self, search_key)</dt><dd><tt>Given&nbsp;the&nbsp;homepage&nbsp;and&nbsp;a&nbsp;key&nbsp;that&nbsp;identifies&nbsp;an&nbsp;item,&nbsp;try&nbsp;to&nbsp;search&nbsp;the&nbsp;website&nbsp;for&nbsp;the&nbsp;item's&nbsp;"real"&nbsp;url.<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+search_key&nbsp;--&nbsp;key&nbsp;that&nbsp;uniquely&nbsp;identifies&nbsp;the&nbsp;item&nbsp;(e.g.&nbsp;image&nbsp;url)</tt></dd></dl>
+
+<dl><dt><a name="EtsyScraper-load_scrapers"><strong>load_scrapers</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="scrapers.html#Scraper">Scraper</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Scraper">class <strong>Scraper</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Scraper-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Scraper-download"><strong>download</strong></a>(self, url)</dt><dd><tt>Download&nbsp;the&nbsp;content&nbsp;of&nbsp;a&nbsp;page&nbsp;for&nbsp;late&nbsp;usage.&nbsp;The&nbsp;content&nbsp;is&nbsp;saved&nbsp;to&nbsp;a&nbsp;file<br>
+with&nbsp;the&nbsp;url&nbsp;as&nbsp;filename</tt></dd></dl>
+
+<dl><dt><a name="Scraper-get_item_info"><strong>get_item_info</strong></a>(self, url, image_url<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="Scraper-get_scraper"><strong>get_scraper</strong></a>(self, domain)</dt></dl>
+
+<dl><dt><a name="Scraper-grab_real_url"><strong>grab_real_url</strong></a>(self, search_key)</dt><dd><tt>Given&nbsp;the&nbsp;homepage&nbsp;and&nbsp;a&nbsp;key&nbsp;that&nbsp;identifies&nbsp;an&nbsp;item,&nbsp;try&nbsp;to&nbsp;search&nbsp;the&nbsp;website&nbsp;for&nbsp;the&nbsp;item's&nbsp;"real"&nbsp;url.<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+search_key&nbsp;--&nbsp;key&nbsp;that&nbsp;uniquely&nbsp;identifies&nbsp;the&nbsp;item&nbsp;(e.g.&nbsp;image&nbsp;url)</tt></dd></dl>
+
+<dl><dt><a name="Scraper-load"><strong>load</strong></a>(self, url)</dt><dd><tt>Load&nbsp;the&nbsp;content&nbsp;of&nbsp;a&nbsp;page&nbsp;from&nbsp;disk.</tt></dd></dl>
+
+<dl><dt><a name="Scraper-load_scrapers"><strong>load_scrapers</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Scraper-scrape"><strong>scrape</strong></a>(self, content)</dt><dd><tt>Scrapes&nbsp;content&nbsp;and&nbsp;returns&nbsp;an&nbsp;item</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="TheSartorialistScraper">class <strong>TheSartorialistScraper</strong></a>(<a href="scrapers.html#Scraper">Scraper</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Scraper">Scraper</a>&nbsp;class&nbsp;that&nbsp;scrapes&nbsp;thesartorialist&nbsp;urls&nbsp;for&nbsp;information&nbsp;about&nbsp;items.<br>
+&nbsp;<br>
+Fields:<br>
+_search_url&nbsp;--&nbsp;used&nbsp;to&nbsp;figure&nbsp;out&nbsp;the&nbsp;real&nbsp;url&nbsp;of&nbsp;an&nbsp;item&nbsp;given&nbsp;a&nbsp;search&nbsp;key<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="scrapers.html#TheSartorialistScraper">TheSartorialistScraper</a></dd>
+<dd><a href="scrapers.html#Scraper">Scraper</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="TheSartorialistScraper-download"><strong>download</strong></a>(self, url)</dt></dl>
+
+<dl><dt><a name="TheSartorialistScraper-grab_real_url"><strong>grab_real_url</strong></a>(self, search_key)</dt></dl>
+
+<dl><dt><a name="TheSartorialistScraper-scrape"><strong>scrape</strong></a>(self, content)</dt><dd><tt>Parse&nbsp;content&nbsp;to&nbsp;<a href="builtins.html#object">object</a></tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="scrapers.html#Scraper">Scraper</a>:<br>
+<dl><dt><a name="TheSartorialistScraper-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="TheSartorialistScraper-get_item_info"><strong>get_item_info</strong></a>(self, url, image_url<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="TheSartorialistScraper-get_scraper"><strong>get_scraper</strong></a>(self, domain)</dt></dl>
+
+<dl><dt><a name="TheSartorialistScraper-load"><strong>load</strong></a>(self, url)</dt><dd><tt>Load&nbsp;the&nbsp;content&nbsp;of&nbsp;a&nbsp;page&nbsp;from&nbsp;disk.</tt></dd></dl>
+
+<dl><dt><a name="TheSartorialistScraper-load_scrapers"><strong>load_scrapers</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="scrapers.html#Scraper">Scraper</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-download_image"><strong>download_image</strong></a>(img_url, dir_name)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>DOMAIN</strong> = 'domain'<br>
+<strong>URL_REGEX</strong> = r'\w+:/*(?P&lt;domain&gt;[a-zA-Z0-9.]*)/'</td></tr></table>
+</body></html>
