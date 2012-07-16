@@ -1,16 +1,19 @@
-import json, caching, re
+import json, re, urllib, os
+from _caching import fetch
 
 DOMAIN = 'domain'
 URL_REGEX = '\w+:/*(?P<{0}>[a-zA-Z0-9.]*)/'.format(DOMAIN)
 
-class SimpleObject:    
+'''This module contains a number of helper functions.
+'''
+
+class SimpleObject:
+    '''Not a very special class. I would have used object() instead but I cannot add
+    arbitrary attributes to an object().
+    '''
+    
     def __init__(self):
         pass
-
-class SimpleItem:
-    def __init__(self):
-        self.details = SimpleObject()
-        self.ratings = SimpleObject()
 
 def write_to_file(path, m, content):
     f = open(path, mode=m)
@@ -30,7 +33,7 @@ def read_from_file(filename):
 
 
 def get_content_as_json(url):
-    resp, content = caching.fetch(url)
+    resp, content = fetch(url)
     assert resp.status == 200
     # for some reason the content is in binary
     content = content.decode("utf-8")
@@ -46,3 +49,16 @@ def get_domain(url):
     m = re.search(URL_REGEX, url)
     domain = m.group(DOMAIN)
     return domain
+
+def download_image(img_url, dir_name):
+    '''Downloads an image. Fails if request is redirected.
+    '''
+
+    response, img = fetch(img_url, 'GET')
+    if (response['content-location'] != img_url):
+        write_to_file(os.path.join(dir_name, 'image_not_found.txt'), 'w', "image at {0} was not found".format(img_url))
+        return False
+
+    img_name = os.path.basename(img_url)
+    write_to_file(os.path.join(dir_name, img_name), 'wb', img)
+    return True

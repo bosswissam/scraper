@@ -6,7 +6,7 @@ class Cache:
 
     '''This is a class to allow for caching for my scrapers. It was inspired by a simple python tutorial here: http://dev.lethain.com/an-introduction-to-compassionate-screenscraping/
 
-    important fields:
+    important attributes:
     scraping_cache_for -- how long to wait before invalidating a cached page
     scraping_domains -- a dictionarly that maintains the last time a domain was scraped by us
     scraping_cache -- a cache that stores the content of pages visited.

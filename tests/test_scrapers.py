@@ -1,6 +1,6 @@
 import csv, argparse, os, json, urllib, sys, unittest
-from common import *
-from scrapers import Scraper
+from pinscraper._common import *
+from pinscraper._scrapers import Scraper
 
 REWRITE_STATIC = False
 STATIC_DIR = 'saved_pages'
@@ -8,7 +8,7 @@ TEST_URLS = 'test-urls.csv'
 
 
 class ScraperTestCase(unittest.TestCase):
-    ''' Test class for my scraper.
+    ''' Test class for pinscraper.
     This test class allows for information to be pre-stored, this way the hard-coded tests for the scrapers do not fail simply because the actual content changed.
     params:
     REWRITE_STATIC -- specify whether to re-download urls for the tests. Setting to True will mean some assertions will have to be modified to reflect new values.
@@ -26,11 +26,20 @@ class ScraperTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        '''Sets up saved pages for all urls in URLS, and loads them to be easily accessible for tests.
-        The most important thing happening here is population of cls.rows. Here's what's happening:
+        '''Sets up saved pages for all urls in URLS, and loads them to be easily accessible 
+        for tests.
+        The most important thing happening here is population of cls.rows. Here's what's 
+        happening:
         - at the start, cls.rows contains only the item and image urls from the csv file
-        - since my code will load a file from disk from each test case, I pre-load it into cls.rows. The code appends after the second element a list of objects the test will use (e.g. etsy listing object and etsy seller object)
-        - finally, I append to that row the appropriate scraper object, this way I don't have to keep calling constructors in my code, instead I can simply retrieve the last element.
+        - since my code will load a file from disk from each test case, I pre-load it into 
+        cls.rows. The code appends after the second element a list of objects the test will 
+        use (e.g. etsy listing object and etsy seller object)
+        - finally, I append to that row the appropriate scraper object, this way I don't have 
+        to keep calling constructors in my code, instead I can simply retrieve the last 
+        element.
+
+        Note: the only requirement here is that the writer of the test knows which row to use
+        for each test
         '''
         cls.cur_dir = os.getcwd()
         reader = csv.reader(open(TEST_URLS, 'r'))

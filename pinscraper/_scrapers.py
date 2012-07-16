@@ -1,34 +1,33 @@
-import re, sys, json, urllib, os, caching
+import re, sys, json, urllib, os
 from bs4 import BeautifulSoup as bs
-from common import *
+from _common import *
+from _caching import fetch
 
-def download_image(img_url, dir_name):
-    response, img = caching.fetch(img_url, 'GET')
-    print(img_url)
-    if (response['content-location'] != img_url): # so far this means redirected to no image
-        write_to_file(os.path.join(dir_name, 'image_not_found.txt'), 'w', "image at {0} was not found".format(img_url))
-        return False
-#    img = img.read()
-    img_name = os.path.basename(img_url)
-    write_to_file(os.path.join(dir_name, img_name), 'wb', img)
-    return True
+'''In this module scrapers for the different websites are defined. A scraper object contains
+the necessary logic to get an item's information given the url.
+'''
 
 class Scraper:
 
+    '''This class maintains a dictionary of scrapers that will scrape different websites.
+
+    use get_scraper to retrieve a scraper for a particular domain.
+
+    '''
     _URL_REGEX = '\w+:/*(?P<domain>[a-zA-Z0-9.]*)/'
     
     def __init__(self):
-        # maintain a dict of scrapers so we don't have to recreate them
         self.scrapers = {}
-        # map domain names to scrapers
         self.scraper_classes = {}
-        self.load_scrapers()
+        self._load_scrapers()
 
-    def load_scrapers(self):
+    def _load_scrapers(self):
         self.scraper_classes['www.etsy.com'] = EtsyScraper
         self.scraper_classes['www.thesartorialist.com'] = TheSartorialistScraper
     
     def get_scraper(self, domain):
+        '''Returns scraper for domain if it exists
+        '''
         if domain in self.scrapers:
             return self.scrapers[domain]
         elif domain in self.scraper_classes:
@@ -39,6 +38,10 @@ class Scraper:
             return None
 
     def get_item_info(self, url, image_url=None):
+        ''' Given a item url and image url, returns a json representation of the item's
+        information. image url is usefl in case actual url is not - it can be used for finding
+        the item's "real" url
+        '''
         path = re.split(self._URL_REGEX, url)[2]
         if (path.strip() == ''):
             if (image_url==None):
@@ -46,28 +49,19 @@ class Scraper:
             # the url posted is just the homepage
             url = self.grab_real_url(image_url)
         # get content for item and parse it
-        resp, content = caching.fetch(url)
+        resp, content = fetch(url)
         return self.scrape(content)
     
-    def grab_real_url(self, search_key):
-        ''' Given the homepage and a key that identifies an item, try to search the website for the item's "real" url.
-        
-        Keyword arguments:
-        search_key -- key that uniquely identifies the item (e.g. image url)
-
-        '''
-        pass
-        
     def scrape(self, content):
-        ''' Scrapes content and returns an item
-        '''
+
         pass
     
     def download(self, url):
         ''' Download the content of a page for late usage. The content is saved to a file
         with the url as filename
         '''
-        pass
+        resp, content = fetch(url)
+        write_to_file(urllib.parse.quote_plus(url), 'w', content.decode('utf-8'))
 
     def load(self, url):
         ''' Load the content of a page from disk.
@@ -92,13 +86,10 @@ class EtsyScraper(Scraper):
     _URL_ID_REGEX = "/(?P<{0}>[0-9]+)/".format(_URL_ID_NAME)
 
     def scrape(self, content):
-        item = SimpleItem()
+        ''' Scrapes content and returns an item
+        '''
+        item = SimpleObject()
         content = content['results'][0]
-        item.id = content['listing_id']
-        # introduced a new field to make it easier to check if the content is empty (from 
-        # outside the class)
-        # This can change in the future, for now I noticed if a Listing does not have
-        # one of those states then it has little information to get
         if (content['state'] != 'active' and content['state'] != 'sold_out'):
             return
         item.url = content['url']
@@ -109,8 +100,6 @@ class EtsyScraper(Scraper):
         item.quantity = content['quantity']
         if (item.quantity):
             item.price = content['price']
-        else:
-            item.price = -1 # if price <  0, my json serializer will write null
         item.currency_code = content['currency_code']
         item.details = SimpleObject()
         item.details.category_path = content['category_path']
@@ -121,6 +110,8 @@ class EtsyScraper(Scraper):
         return item
 
     def get_item_info(self, url, image_url=None):
+        '''Same as Scraper.get_info
+        '''
         content = get_content_as_json(self._get_etsy_listing_api_url(url))
         return self.scrape(content)
 
@@ -147,6 +138,9 @@ class EtsyScraper(Scraper):
         return '{0}{1}?api_key={2}'.format(self._LISTING_API_URL, listing_id, self._API_KEY)
         
     def download(self, url):
+        '''Same idea as download for Scraper, but a little more trick: url is transformed into 
+        the API url and information is also fetched for the seller.
+        '''
         seller_id = self.get_item_info(url).seller.id
         item = get_content_as_json(self._get_etsy_listing_api_url(url))
         seller = get_content_as_json(self._get_etsy_seller_api_url(seller_id))
@@ -156,6 +150,8 @@ class EtsyScraper(Scraper):
 
 
     def load(self, url):
+        '''Load information for both item and seller
+        '''
         filename = urllib.parse.quote_plus(url)
         item = read_from_file(filename)
         seller = read_from_file(filename+'-seller')
@@ -165,24 +161,34 @@ class EtsyScraper(Scraper):
 class TheSartorialistScraper(Scraper):
     '''Scraper class that scrapes thesartorialist urls for information about items.
 
-    Fields:
+    Attributes:
     _search_url -- used to figure out the real url of an item given a search key
 
     '''
     _search_url = 'http://www.thesartorialist.com/?s={0}'
 
     def grab_real_url(self, search_key):
-        resp, content = caching.fetch(self._search_url.format(search_key))
+        ''' Given the homepage and a key that identifies an item, try to search the 
+        website for the item's "real" url.
+        
+        Keyword arguments:
+        search_key -- key that uniquely identifies the item (e.g. image url)
+
+        '''
+
+        resp, content = fetch(self._search_url.format(search_key))
         soup = bs(content)
         result_list = soup.find('a', 'overhand')
         url = result_list['href']
         return url
 
     def scrape(self, content):
-        ''' Parse content to object
+        ''' Scrapes content and returns an item
         '''
-        item = SimpleItem()
+
+        item = SimpleObject()
         soup = bs(content)
+        item.details = SimpleObject()
         item.details.category = soup.find('a', {'rel':'category tag'}).string
         item.tags = [x.string for x in soup.findAll('a', {'rel':'tag'})]
         item.details.comments_num = soup.find('span', 'nb-comment').string
@@ -190,14 +196,5 @@ class TheSartorialistScraper(Scraper):
         item.title = soup.find('a', {'rel':'bookmark'}).string
         return item
 
-    def download(self, url):
-        resp, content = caching.fetch(url)
-        write_to_file(urllib.parse.quote_plus(url), 'w', content.decode('utf-8'))
+#class AmazonScraper(Scraper):
     
-
-if __name__ == '__main__':
-    x = TheSartorialistParser()
-    url = x.grab_real_url('http://images.thesartorialist.com/thumbnails/2011/12/101411IMG_4766Web1.jpg')
-    print(url)
-    x.get_item_info('http://www.thesartorialist.com/','http://images.thesartorialist.com/thumbnails/2011/12/101411IMG_4766Web1.jpg')
-
