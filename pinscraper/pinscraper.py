@@ -1,4 +1,4 @@
-import argparse
+import argparse, os
 from _scrapers import Scraper
 from _common import *
 
@@ -23,6 +23,7 @@ def start_pinscraping(filename, dest):
         rmtree(dest)
     mkdir(dest)
     reader = sopen(filename)
+    curdir = os.getcwd()
     chdir(dest)
 
     print("Starting scraper on '{0}', storing results in '{1}'".format(filename, dest))    
@@ -35,6 +36,7 @@ def start_pinscraping(filename, dest):
         ret = _pinscraperow(row, row_num)
         if(ret != True):
             print("Domain '{0}' not recognized by scraper at line {1} in {2}".format(ret, row_num, filename))
+    chdir(curdir)
     print("Done scraping!")
 
 

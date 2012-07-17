@@ -2,6 +2,7 @@ import httplib2, re, time, os, shutil, sys
 
 CACHE_PATH = '{0}/.cache'.format(os.path.dirname(os.path.realpath(__file__)))
 
+
 class Cache:
 
     '''This is a class to allow for caching for my scrapers. It was inspired by a simple python tutorial here: http://dev.lethain.com/an-introduction-to-compassionate-screenscraping/

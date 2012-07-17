@@ -24,6 +24,7 @@ class Scraper:
     def _load_scrapers(self):
         self.scraper_classes['www.etsy.com'] = EtsyScraper
         self.scraper_classes['www.thesartorialist.com'] = TheSartorialistScraper
+        self.scraper_classes['www.amazon.com'] = AmazonScraper
     
     def get_scraper(self, domain):
         '''Returns scraper for domain if it exists
@@ -50,7 +51,9 @@ class Scraper:
             url = self.grab_real_url(image_url)
         # get content for item and parse it
         resp, content = fetch(url)
-        return self.scrape(content)
+        item = self.scrape(content)
+        item.url = url
+        return item
     
     def download(self, url):
         ''' Download the content of a page for late usage. The content is saved to a file
@@ -84,25 +87,39 @@ class EtsyScraper(Scraper):
     def scrape(self, content):
         ''' Scrapes content and returns an item
         '''
+
         item = SimpleObject()
         content = content['results'][0]
+
         if (content['state'] != 'active' and content['state'] != 'sold_out'):
+            # From some examples, this seemed to mean most json content is empty
             return
+
+        # Get item url + title + seller info
         item.url = content['url']
         item.title = content['title']
         item.seller = self._get_etsy_seller(content['user_id'])
+
+        # Get item tags
         item.tags = content['tags']
         item.tags.extend(content['category_path'])
+        
+        # Get item quantity + pricing
         item.quantity = content['quantity']
         if (item.quantity):
             item.price = content['price']
         item.currency_code = content['currency_code']
+
+        # Get item details - category + description
         item.details = SimpleObject()
         item.details.category_path = content['category_path']
         item.details.description = content['description']
         item.user_interaction = SimpleObject()
+
+        # Get user interaction - views + num_favorers
         item.user_interaction.views = content['views']
         item.user_interaction.num_favorers = content['num_favorers']
+
         return item
 
     def get_item_info(self, url, image_url=None):
@@ -112,13 +129,23 @@ class EtsyScraper(Scraper):
         return self.scrape(content)
 
     def scrape_seller(self, content):
+        '''Scrapes json content from Etsy API response
+        '''
+
         seller = SimpleObject()
         content = content['results'][0]
+
+        # Get seller id
         seller.id = content['user_id']
+
+        # Get login_name
         seller.login_name = content['login_name']
+        
+        # Get seller feedback info
         seller.feedback_info = SimpleObject()
         seller.feedback_info.count = content['feedback_info']['count']
         seller.feedback_info.score = content['feedback_info']['score']
+
         return seller
     
     def _get_etsy_seller(self, user_id):
@@ -184,15 +211,22 @@ class TheSartorialistScraper(Scraper):
 
         item = SimpleObject()
         soup = bs(content)
+
+        # Get item details
         item.details = SimpleObject()
         item.details.category = soup.find('a', {'rel':'category tag'}).string
+        item.details.date_posted = soup.find('p', 'date-post').contents[1]
+
+        # Get item tags
         item.tags = [x.string for x in soup.findAll('a', {'rel':'tag'})]
+        
+        # Get user interaction - number of comments
         item.user_interaction = SimpleObject()
         item.user_interaction.comments_num = soup.find('span', 'nb-comment').string
-        item.details.date_posted = soup.find('p', 'date-post').contents[1]
+        
+        # Get item title
         heading = soup.find('a', {'rel':'bookmark'})
         item.title = heading.string
-        item.url = heading['href']
         return item
 
 class AmazonScraper(Scraper):
@@ -202,8 +236,66 @@ class AmazonScraper(Scraper):
     def scrape(self, content):
         item = SimpleObject()
         soup = bs(content)
+
+        # Get pricing info
         pricing = soup.find('b', 'priceLarge').string
-        item.price = pricing[1:]
+        item.price = float(pricing[1:])
         item.currency_code = pricing[0]
         
+        # Get ratings + likes
+        item.user_interaction = SimpleObject()
+        item.user_interaction.likes = int(soup.find('span', 'amazonLikeCount').string)
+        item.user_interaction.five_star_rating = SimpleObject()
+        item.user_interaction.five_star_rating.score = soup.find('span', 'swSprite s_star_4_5 ').string.split('out of')[0].strip()
+        item.user_interaction.five_star_rating.count = re.search('(?P<count>\d+) customer reviews', str(soup.findAll('a'))).group('count')
+
+        # Get more item details
+        item.details = SimpleObject()
+        discount = soup.find('span', {'id':'youSaveValue'}).string
+        item.details.discount = SimpleObject()
+        item.details.discount.value = float(discount.split(" ")[0][1:])
+        item.details.discount.percentage = float(discount.split(" ")[-1][1:-2])
+
+        # Get item quantity
+        item.quantity = SimpleObject()
+        quantities = [re.search('(?P<quantity>\d+).+', x.string).group('quantity') for x in soup.findAll('a', 'buyAction olpBlueLink')]
+        item.quantity.new = int(quantities[0])
+        if len(quantities) > 1:
+            item.quantity.old = int(quantities[1])
+        if len(quantities) > 2:
+            item.quantity.refurbished = int(quantities[2])
+        
+        # Get item title
+        item.title = soup.find('title').string
+
+        # Get item tags
+        item.tags = [x.string for x in soup.findAll('a', {'rel':'tag'})]
+        return item
+
+class GapScraper(Scraper):
+    '''Scraper to scrape gap.com urls
+    '''
+
+    def scrape(self, content):
+        ''' Gap uses javascrpting to load content on their page. To parse that I have to set up Webkit or something similar.
+        '''
+#        item = SimpleObject()
+#        soup = bs(content)
+
+        # Get item title
+#        item.title = soup.find('div', 'brand1')
+
+        # Get user interaction
+#        item.user_interaction = SimpleObject()
+#        item.user_interaction.five_star_rating = SimpleObject()
+#        item.user_interaction.five_star_rating.score = soup.find('span', 'cssHide').split(" ")[1]
+#        item.user_interaction.five_star_rating.count = soup.find('span', {'id':'reviewCount'}).split(" ")[0]
+
+#        return item
+        pass
+
+
+if __name__=='__main__':
+    x = GapScraper()
+    x.get_item_info('http://www.gap.com/browse/product.do?cid=5231&vid=1&pid=768628&scid=768628352','http://www2.assets-gap.com/Asset_Archive/GPWeb/Assets/Product/768/768628/main/gp768628-35p01v01.jpg')
 

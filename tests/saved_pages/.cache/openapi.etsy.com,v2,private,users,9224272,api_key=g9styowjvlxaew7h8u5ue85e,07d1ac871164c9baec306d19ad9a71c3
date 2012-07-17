@@ -1,0 +1,11 @@
+status: 200
+content-length: 227
+content-location: http://openapi.etsy.com/v2/private/users/9224272?api_key=g9styowjvlxaew7h8u5ue85e
+set-cookie: etalb=259736404.1.10.1342519292; expires=Tue, 17-Jul-2012 10:31:32 GMT; path=/; domain=.etsy.com
+x-cnection: close
+x-etsy-request-uuid: uo_7E6Qf1iVB10LN9_90pR1FWxXe
+date: Tue, 17 Jul 2012 10:01:32 GMT
+server: Apache
+content-type: application/json
+
+{"count":1,"results":[{"user_id":9224272,"login_name":"TeezLoueez","creation_tsz":1282320606,"referred_by_user_id":5367930,"feedback_info":{"count":76,"score":100}}],"params":{"user_id":"9224272"},"type":"User","pagination":{}}

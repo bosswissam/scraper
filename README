@@ -1,15 +1,97 @@
-This is a webscraper project I was asked to implement as part of a job interview for Pinterest.
+This is a web scraper project I was asked to implement as part of a job interview for Pinterest.
 
 You can find the task requirements in WebScraper.txt.
 
-This will soon include how to use the scraper
+ran with python3.1tools used: beautifulsoup, httplib2, , etsy-python, jsonview
 
-feature: find out if link is hot, if it is, use caching accordingly
+packages needed to run:
+httplib2
+BeautfiulSoup (bs4)
+lxml (need to modify builder/__init__.py to register lxml parser at bottom of file)
 
-tools used: firebug, beautifulsoup, httplib2, http://sitescraper.net/blog/How-to-teach-yourself-web-scraping/, etsy-python, jsonview
+###########################################################################
+###########################################################################
+## Usage ##
+###########################################################################
+###########################################################################
 
-###
-Information to scrape:
+>>python3 test_scrapers
+or
+>>python3 pinscraper 'test-urls' 'results'
+or
+>>python3 test_pinscraper
+
+###########################################################################
+###########################################################################
+## Implementation Status ##
+###########################################################################
+###########################################################################
+
+I attempted implementing a module that scrapes the urls in WebScraper.txt (four different domains). I was able to scrape most of the required information for three of them (Etsy, Thesartorialist, Amazon). Scraping gap.com presented problems because a lot of the content for their pages is loaded dynamically, hence I did not complete the scraper.
+
+The test test_scrapers uses three links, one for each website, and validate that the information is parsed correctly. The test test_pinscraper ensures that the right number of files was downloaded.
+
+Note that in my scrapers I did not scrape ALL the information on the websites, I only scraped some info as a proof of concept.
+
+One of the strengths of how I designed my module is that it's very easy to extend. Adding a new scraper and setting up a new test case is very easy in the current framework, and would take < 45mins. There's also minimal code repetition and hard-coding, and I added legible documentation when necessary.
+
+One of the problems presented is being able to find the "real" url a user intended to pin, given only the url of the image associated with it. I demonstrate in my TheSartorialisParser that one way in which we can solve this is simply posting a GET request to the website's search url with the image url as parameter. Ideally this would return only one item (this was the case for thesartorialist so I stopped here), but if not, we can try to extract another key or other information from the image url that can help us the "real" url.
+
+The other issue presented was avoiding being blocked by websites. I used a caching mechanism outlined in http://dev.lethain.com/an-introduction-to-compassionate-screenscraping/ to make sure my scrapers do not get blocked by websites. The mechanism also allows to wait at least a certain amount before querying a website even if the specific page wasn't requested before. 
+
+This was my first time writing a web scraper, so I reseearched a lot about good web scraping before diving into it, and I wanted to try and use different web scraping techniques for different scenarios. There are a lot of ways in which webs craping can be done, but I tried to highlight three that I think were the simplest for me to learn quickly and were not an overkill for the task:
+1) Use regex. This is an option when you're looking for a very particular piece of information on the website (e.g. '28 people have liked this' one can easily use the regex '(?P<likes>\d+) people have liked this' to get the number of likes.
+2) Look up html tags and attributes. This is a good way if a website is not loading content through javascript or using AJAX.
+3) Use the host's API if it exists - this is really the best option and has many advantages. For one, API specs change much less often than a url's html tree structure. Second, you don't have to worry about throttling your requests as much, being blocked from the website, or ruining the hosts analytics.
+
+In the process of building this module, I learned about Microformats. Unfortunately, it doesn't seem like they're very widely used so far, otherwise beautifulsoup would have been more than enough to scrape many websites without having to write specific scrapers for each :).
+
+###########################################################################
+###########################################################################
+## tutorials/websites on scraping/other websites I read ##
+###########################################################################
+###########################################################################
+
+Tutorials:
+http://dev.lethain.com/an-introduction-to-compassionate-screenscraping/
+http://sitescraper.net/blog/How-to-teach-yourself-web-scraping/
+webscraping library - http://code.google.com/p/webscraping/
+http://www.result-search.com/m/lyman/134.html
+http://sitescraper.net/blog/Caching-data-efficiently/
+
+Etsy and Amazon developer services:
+http://www.etsy.com/developers/
+https://developer.amazonservices.com/gp/mws/api.html/180-1059002-1915504?ie=UTF8&section=products&group=products&version=latest
+
+And many q&as on stackoverflow!
+
+###########################################################################
+###########################################################################
+## Future impirovement ##
+###########################################################################
+###########################################################################
+
+# Things to improve#
+- Use webkit (or something similar) to get content loaded through js
+- Use amazon API
+
+# Things to take this to the next level #
+- Implement advanced scraping procedures if necessary (use proxies, threading, share cache - maybe use memcache)
+- smarter caching timeout (e.g. find out if link is hot, if it is, use caching accordingly)
+
+# Things I would do differenly next time#
+- use python2.7
+- use webscraping module
+- use webscraping.pdict as cache storage (cache dictionary implemented as database rather than being stored completely in memory).
+- for some websites simple regex parsing can work better. I would have used it more but in some cases the information content had html tags for styling, in other cases (like amazon) the item page was not well-formed and henced I could not decode it as a string and do regex search on it.
+
+###########################################################################
+###########################################################################
+## Information to scrape: ##
+###########################################################################
+###########################################################################
+
+Note: this is just a listing of information that was interesting for me to scrape, the current implementation does not scrape all this info.
 
 #Etsy#
 Prices-
@@ -47,7 +129,7 @@ date listed
 title
 board/category
 tags
-# comments
+comments
 
 #amazon#
 title
@@ -59,18 +141,36 @@ product details:
  dims
  shipping_weight
  shipping
-# available: -new, used, refurbished
+available: -new, used, refurbished
 
+#Gap#
+title
+likes
+rating
+price
+details
 
+###########################################################################
+###########################################################################
+## Notes ##
+###########################################################################
+###########################################################################
 
-might be easier to use a database - assume url is unique id. Using elixir?
-ok nvm, JSON is required.
-However, can use amazon's & etsy's developer API to pull the info
+Some notes I took down during implementation:
 
-notes about implementation:
 #ETSY#
-current implementation misses bundling prices for shipping and shipping info in general.
+future work:
+bundling prices for shipping and shipping info in general.
 
 #thesartorialist#
+Stores all required info
 current implementation does not store paragraphs under picture
 didn't seem to have seller/prices/quantity info
+
+#Gap#
+Need a tool like webkit to be able to scrape the javascript-created content. The tool exists in the webscraping library referenced above, but couldn't get it to work on python3.
+
+#Amazon#
+Scraper process most of necesseray information, but I would use their API in the future.
+https://images-na.ssl-images-amazon.com/images/G/01/mwsportal/doc/en_US/products/MWSProductsApiReference._V143471349_.pdf
+

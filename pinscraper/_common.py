@@ -56,6 +56,13 @@ def chdir(path):
     else:
         os.chdir(os.path.join(STATIC_DIR, path))
 
+def walk(path):
+    if os.path.isabs(path) or STATIC_DIR in os.getcwd():
+        return os.walk(path)
+    else:
+        return os.walk(os.path.join(STATIC_DIR, path))
+
+
 def write_to_file(filename, m, content):
     f = sopen(filename, mode=m)
     f.write(content)
@@ -71,6 +78,7 @@ def read_from_file(filename):
     content = f.read()
     f.close()
     return content
+
 
 #############################################################################
 #############################################################################
