@@ -53,7 +53,8 @@ class Scraper:
         return self.scrape(content)
     
     def scrape(self, content):
-
+        '''To be implemented by sub classes.
+        '''
         pass
     
     def download(self, url):
@@ -104,9 +105,9 @@ class EtsyScraper(Scraper):
         item.details = SimpleObject()
         item.details.category_path = content['category_path']
         item.details.description = content['description']
-        item.ratings = SimpleObject()
-        item.ratings.views = content['views']
-        item.ratings.num_favorers = content['num_favorers']
+        item.user_interaction = SimpleObject()
+        item.user_interaction.views = content['views']
+        item.user_interaction.num_favorers = content['num_favorers']
         return item
 
     def get_item_info(self, url, image_url=None):
@@ -191,7 +192,8 @@ class TheSartorialistScraper(Scraper):
         item.details = SimpleObject()
         item.details.category = soup.find('a', {'rel':'category tag'}).string
         item.tags = [x.string for x in soup.findAll('a', {'rel':'tag'})]
-        item.details.comments_num = soup.find('span', 'nb-comment').string
+        item.user_interaction = SimpleObject()
+        item.user_interaction.comments_num = soup.find('span', 'nb-comment').string
         item.details.date_posted = soup.find('p', 'date-post').contents[1]
         item.title = soup.find('a', {'rel':'bookmark'}).string
         return item

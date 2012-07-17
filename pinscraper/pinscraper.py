@@ -1,40 +1,52 @@
-import time, re, argparse, csv, sys, shutil, os
+import argparse
 from _scrapers import Scraper
 from _common import *
-from bs4 import BeautifulSoup as bfs
-SCRAPER = Scraper()
 
-# from http://regexlib.com/Search.aspx?k=URL&AspxAutoDetectCookieSupport=1
-URL_REGEX = '\w+:/*(?P<domain>[a-zA-Z0-9.]*)/'#'[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|COM|ORG|NET|MIL|EDU)'
 
+'''This module uses _scrapers to scrape a csv file of urls. The csv file must contain two columns: item url and image url.
+Please run with -h for details on how to use.
+
+'''
 
 def start_pinscraping(filename, dest):
-    if os.path.exists(dest):
-        shutil.rmtree(dest)
-    os.mkdir(dest)
+    '''Start scraping the specified csv file, and stores downloaded contents 
+    in the dest directory.
+
+    Arguments:
+    filename -- absolute or relative path to csv file. Relative paths must be under 
+    _settings.STATIC_DIR
+    dest -- absolute or relative path to destination directory. Relative paths must 
+    be under _settings.STATIC_DIR
+    
+    '''
+    if exists(dest):
+        rmtree(dest)
+    mkdir(dest)
+    reader = sopen(filename)
+    chdir(dest)
+
     print("Starting scraper on '{0}', storing results in '{1}'".format(filename, dest))    
-    reader = open(filename)
-    os.chdir(dest)
+
     row_num = 0
     for row in reader:
         row_num +=1
-        # we only have two columns
-        row = re.split(",", row, maxsplit=1)
-        ret = pinscraperow(row, row_num)
+        # we can only have two columns
+        row = row.split(",", 1)
+        ret = _pinscraperow(row, row_num)
         if(ret != True):
             print("Domain '{0}' not recognized by scraper at line {1} in {2}".format(ret, row_num, filename))
     print("Done scraping!")
 
 
-def pinscraperow(row, row_num):
+def _pinscraperow(row, row_num):
+    scraper = Scraper()
     url = row[0].strip()
     img_url = row[1].strip()
-    m = re.search(URL_REGEX, url)
     dir_name = urllib.parse.quote_plus(url)
-    os.mkdir(dir_name)
+    mkdir(dir_name)
     download_image(img_url, dir_name)
-    domain = m.group('domain')
-    scraper = SCRAPER.get_scraper(domain)
+    domain = get_domain(url)
+    scraper = scraper.get_scraper(domain)
     if (scraper):
         print("Getting information from {0}... ".format(domain))
         content = scraper.get_item_info(url, img_url)
@@ -48,8 +60,8 @@ def pinscraperow(row, row_num):
 
 def main():
     parser = argparse.ArgumentParser(description="Scrape websites")
-    parser.add_argument('filename', help = 'csv file of product + image urls')
-    parser.add_argument('dest', help = 'destination directory to store results')
+    parser.add_argument('filename', help = 'csv file of product and image urls. If path is relative, file is assumed to be in {0}'.format(STATIC_DIR))
+    parser.add_argument('dest', help = 'destination directory to store results. If path is relative, it will be created under {0}'.format(STATIC_DIR))
     argvs = vars(parser.parse_args())
     filename = argvs['filename']
     dest = argvs['dest']
