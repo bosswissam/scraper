@@ -1,0 +1,76 @@
+This is a webscraper project I was asked to implement as part of a job interview for Pinterest.
+
+You can find the task requirements in WebScraper.txt.
+
+This will soon include how to use the scraper
+
+feature: find out if link is hot, if it is, use caching accordingly
+
+tools used: firebug, beautifulsoup, httplib2, http://sitescraper.net/blog/How-to-teach-yourself-web-scraping/, etsy-python, jsonview
+
+###
+Information to scrape:
+
+#Etsy#
+Prices-
+ Individual items/bundles //do machine learning to figure out which items bundle together
+ payment methods
+Number of Items Available-
+Seller information
+ Name-
+ description-
+ url-
+ favorited
+ favorites
+ feedback (+/-/0)
+ contact info
+ circles(?)
+Tags-
+Product Rating-
+ Views-
+ Admirers-
+ Treasury lists-
+Details-
+ About-
+ Description-
+ Materials-
+ Dimensions-
+ Listing #-
+ Category
+ Date Listed/Posted-
+ Related items: listing #s
+ Shipping: locations, costs - individual/bundle-
+Product Title-
+
+#theartorialist#
+date listed
+title
+board/category
+tags
+# comments
+
+#amazon#
+title
+seller info: name, rating over past 12months (/5, #)
+rating (/5, # and likes)
+price
+tags
+product details:
+ dims
+ shipping_weight
+ shipping
+# available: -new, used, refurbished
+
+
+
+might be easier to use a database - assume url is unique id. Using elixir?
+ok nvm, JSON is required.
+However, can use amazon's & etsy's developer API to pull the info
+
+notes about implementation:
+#ETSY#
+current implementation misses bundling prices for shipping and shipping info in general.
+
+#thesartorialist#
+current implementation does not store paragraphs under picture
+didn't seem to have seller/prices/quantity info

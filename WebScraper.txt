@@ -1,0 +1,53 @@
+Pinterest Web Scraper Project
+
+Your Job:
+
+At Pinterest, users like to pin items off of other people's websites.
+We normally just grab the image and the url of the website, but
+we want to start grabbing a lot more information from the website for our services.
+
+We want you to write a more intelligent web scraper that will help us grab some
+of the following information for sites of your choice:
+
+Prices
+Number of Items Available
+Seller Information
+Tags
+Product Rating
+Product Details
+Product Title
+
+This could work on sites such as Etsy, Amazon, Gap, or other sites of your choice.
+
+Your Code:
+Please write a small application that can read a csv of urls and images from a file.
+For each url and image link it will download the image into a sub directory and store
+its own json blob file of information for the urls. The schema is up to you, but it should
+try to be as consistent for different sites as possible.
+
+Please include tests with your code that show that your application works. This should
+be more than just a csv that pulls back data, but actual tests that check the results
+are what you are looking for.
+
+Your code can be in any language of your choice. It can be a simple application that runs,
+grabs the results, and shuts down when its finished processing the file.
+
+
+Extra Features:
+A lot of times users end up pinning the home page instead of the actual entry they
+are trying to pin. Try extending this to grab a better url for the item.
+For example on a blog they will pin the main feed instead of the actual article
+they were trying to pin. This makes it hard for users looking at the pin to find
+the correct information.
+
+Try to avoid being blocked by websites. A lot of time websites will block downloading
+images or pages if the user agent or the referrer information is suspicious.
+
+Example CSV file:
+url,image_file
+http://www.etsy.com/listing/88017614/vintage-kitchen-scale-mid-century-modern?ref=fp_treasury_1,http://img1.etsystatic.com/il_570xN.293587689.jpg                                                                                                                                                                                                                     
+http://www.etsy.com/listing/86483141/white-and-gold-charm-drop-earrings?ref=fp_featured_item,http://img2.etsystatic.com/il_fullxfull.287597146.jpg
+http://www.amazon.com/gp/product/B002P8T0L0/ref=s9_simh_gw_p23_d0_g23_i1?pf_rd_m=ATVPDKIKX0DER&pf_rd_s=center-2&pf_rd_r=0WQ1VFHRSY7ZTB93FGYG&pf_rd_t=101&pf_rd_p=470938631&pf_rd_i=507846,http://ecx.images-amazon.com/images/I/31hak2cSIOL.jpg
+http://www.amazon.com/Spidering-Hacks-Kevin-Hemenway/dp/0596005776/ref=sr_1_1?ie=UTF8&qid=1323553646&sr=8-1,http://ecx.images-amazon.com/images/I/416Qhhyq%2BmL._BO2,204,203,200_PIsitb-sticker-arrow-click,TopRight,35,-76_AA300_SH20_OU01_.jpg
+http://www.thesartorialist.com/,http://images.thesartorialist.com/thumbnails/2011/12/101411IMG_4766Web1.jpg
+http://www.gap.com/browse/product.do?cid=5231&vid=1&pid=768628&scid=768628352,http://www2.assets-gap.com/Asset_Archive/GPWeb/Assets/Product/768/768628/main/gp768628-35p01v01.jpg

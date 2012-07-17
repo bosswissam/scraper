@@ -190,9 +190,20 @@ class TheSartorialistScraper(Scraper):
         item.user_interaction = SimpleObject()
         item.user_interaction.comments_num = soup.find('span', 'nb-comment').string
         item.details.date_posted = soup.find('p', 'date-post').contents[1]
-        item.title = soup.find('a', {'rel':'bookmark'}).string
-        item.url = soup.find('a', {'rel':'bookmark'})['href']
+        heading = soup.find('a', {'rel':'bookmark'})
+        item.title = heading.string
+        item.url = heading['href']
         return item
 
 class AmazonScraper(Scraper):
+    '''Scraper to scrape amazon.com urls
+    '''
     
+    def scrape(self, content):
+        item = SimpleObject()
+        soup = bs(content)
+        pricing = soup.find('b', 'priceLarge').string
+        item.price = pricing[1:]
+        item.currency_code = pricing[0]
+        
+
