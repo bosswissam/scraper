@@ -21,6 +21,15 @@ or
 or
 >>python3 test_pinscraper
 
+The files produced when running the second command contain json objects that contain some of the following attributes:
+price
+currency_code
+seller - seller info
+quantity
+details - such as dimensions, etc
+user_iteraction - ratings, views, etc
+tags
+
 ###########################################################################
 ###########################################################################
 ## Implementation Status ##
