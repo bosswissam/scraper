@@ -52,11 +52,6 @@ class Scraper:
         resp, content = fetch(url)
         return self.scrape(content)
     
-    def scrape(self, content):
-        '''To be implemented by sub classes.
-        '''
-        pass
-    
     def download(self, url):
         ''' Download the content of a page for late usage. The content is saved to a file
         with the url as filename
@@ -199,5 +194,5 @@ class TheSartorialistScraper(Scraper):
         item.url = soup.find('a', {'rel':'bookmark'})['href']
         return item
 
-#class AmazonScraper(Scraper):
+class AmazonScraper(Scraper):
     
